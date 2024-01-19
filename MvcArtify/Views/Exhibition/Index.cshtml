@@ -1,0 +1,29 @@
+@model IEnumerable<MvcArtify.Models.Exhibition>
+
+<h2>Exhibitions</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Location</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var exhibition in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => exhibition.ETitle)</td>
+            <td>@Html.DisplayFor(modelItem => exhibition.StartDate)</td>
+            <td>@Html.DisplayFor(modelItem => exhibition.EndDate)</td>
+            <td>@Html.DisplayFor(modelItem => exhibition.Location)</td>
+            <td>
+                <a asp-action="Details" asp-route-id="@exhibition.ExhibitionID">View Details</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
