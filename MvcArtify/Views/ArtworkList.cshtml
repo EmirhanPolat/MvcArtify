@@ -1,0 +1,44 @@
+@model List<MvcArtify.Models.Artwork>
+
+@{
+    ViewBag.Title = "Artwork List";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Set your desired layout
+}
+
+<h2>Artwork List</h2>
+
+<!-- Search Bar -->
+<form asp-controller="Artwork" asp-action="ArtworkList" method="get">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" name="searchQuery" placeholder="Search for artworks...">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit">Search</button>
+        </div>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Art Style</th>
+            <th>Visitor ID</th>
+            <th>Sale Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var artwork in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="Artwork" asp-action="Details" asp-route-id="@artwork.ArtworkID">
+                        @artwork.ATitle
+                    </a>
+                </td>
+                <td>@artwork.ArtStyle</td> <!-- Corrected property name -->
+                <td>@artwork.VisitorID</td> <!-- Corrected property name -->
+                <td>@artwork.SalePrice.ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+</table>

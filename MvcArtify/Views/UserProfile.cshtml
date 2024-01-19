@@ -1,0 +1,15 @@
+@model MvcArtify.Models.User
+
+@{
+    ViewData["Title"] = "User Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Set your layout as needed
+}
+
+<h1>User Profile</h1>
+
+<div>
+    <h3>User Information</h3>
+    <p><strong>User ID:</strong> @Model.UId</p>
+    <p><strong>User Name:</strong> @Model.UName</p>
+    <p><strong>Digital Wallet:</strong> $@Model.DigitalWallet</p>
+</div>

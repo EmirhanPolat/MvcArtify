@@ -28,5 +28,20 @@ namespace MvcArtify.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [HttpPost]
+    public IActionResult Search(string searchQuery)
+    {
+        if (!string.IsNullOrWhiteSpace(searchQuery))
+        {
+            // Redirect to the ArtworkList action with the search query as a parameter
+            return RedirectToAction("ArtworkList", "Artwork", new { searchQuery });
+        }
+        else
+        {
+            // Handle empty search query, e.g., display a message or redirect
+            return RedirectToAction("Index");
+        }
+    }
     }
 }
