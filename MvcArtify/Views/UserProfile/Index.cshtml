@@ -1,0 +1,24 @@
+@model MvcArtify.Models.User
+
+@{
+    ViewData["Title"] = "User Profile";
+}
+
+<h2>@Model.UName's Profile</h2>
+
+<div>
+    <h3>Digital Wallet</h3>
+    <p>Balance: @Model.DigitalWallet</p>
+</div>
+
+<div>
+    <h3>Bought Artworks</h3>
+    <ul>
+        @foreach (var artwork in Model.BoughtArtworks)
+        {
+            <li>
+                <strong>@artwork.ATitle</strong> - @artwork.ArtStyle, @artwork.Type, purchased for @artwork.SalePrice
+            </li>
+        }
+    </ul>
+</div>

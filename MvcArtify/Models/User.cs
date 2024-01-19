@@ -13,5 +13,6 @@ namespace MvcArtify.Models
         public int DigitalWallet { get; set; }
         public ICollection<ReviewComment> ReviewComments { get; internal set; }
         public ICollection<Review> Reviews { get; internal set; }
+        public virtual ICollection<Artwork> BoughtArtworks { get; set; }
     }
 }
