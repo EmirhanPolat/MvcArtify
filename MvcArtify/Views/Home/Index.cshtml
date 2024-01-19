@@ -8,7 +8,7 @@
     <p>Explore and discover amazing artworks.</p>
 
     <!-- Search Bar -->
-    <form asp-controller="Artwork" asp-action="ArtworkList" method="get">
+    <form asp-controller="Artwork" asp-action="Index" method="get">
         <div class="input-group mb-3">
             <input type="text" class="form-control" name="searchQuery" placeholder="Search for artworks...">
             <div class="input-group-append">
@@ -17,8 +17,23 @@
         </div>
     </form>
 
-    <p><a href="@Url.Action("ArtworkList", "Artwork")">View Artwork List</a></p>
-
-    <!-- User Profile Link -->
-    <p><a href="@Url.Action("Profile", "UserProfile")">View User Profile</a></p>
+    <!-- Navigation Links -->
+    <div class="row mt-4">
+        <div class="col">
+            <a class="btn btn-primary" href="@Url.Action("Index", "Artwork")">View Artworks</a>
+        </div>
+        <div class="col">
+            <a class="btn btn-primary" href="@Url.Action("Index", "Exhibition")">View Exhibitions</a>
+        </div>
+        <div class="col">
+            <a class="btn btn-primary" href="@Url.Action("Profile", "UserProfile")">Your Profile</a>
+        </div>
+        <div class="col">
+            <a class="btn btn-primary" href="@Url.Action("BoughtArtworks", "UserProfile")">Purchased Artworks</a>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <!-- Optional JavaScript if needed -->
+}
