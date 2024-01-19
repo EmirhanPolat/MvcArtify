@@ -1,46 +1,31 @@
+using Microsoft.AspNetCore.Mvc;
+using MvcArtify.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MvcArtify.Models;
-using MvcArtify.DataContext; // Make sure this namespace matches your MvcArtifyContext location
 
 namespace MvcArtify.Controllers
 {
     public class ArtworkController : Controller
     {
-        private readonly MvcArtifyContext _context;
-
-        public ArtworkController(MvcArtifyContext context)
+        // Mock data for artworks
+        private List<Artwork> _mockArtworks = new List<Artwork>
         {
-            _context = context;
-        }
+            new Artwork { ArtworkID = 1, ATitle = "Artwork 1", ArtStyle = "Style 1", Type = "Type 1", SalePrice = 100.00f },
+            new Artwork { ArtworkID = 2, ATitle = "Artwork 2", ArtStyle = "Style 2", Type = "Type 2", SalePrice = 200.00f },
+            // Additional mock artworks...
+        };
 
         // GET: Artwork
-        // Displays a list of all artworks
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var artworks = await _context.Artworks
-                .Include(a => a.Gallery)
-                .Include(a => a.Exhibition)
-                .ToListAsync();
-            return View(artworks);
+            return View(_mockArtworks);
         }
 
         // GET: Artwork/Details/5
-        // Displays the details of a specific artwork
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var artwork = await _context.Artworks
-                .Include(a => a.Gallery)
-                .Include(a => a.Exhibition)
-                .FirstOrDefaultAsync(m => m.ArtworkID == id);
-            
+            var artwork = _mockArtworks.FirstOrDefault(a => a.ArtworkID == id);
             if (artwork == null)
             {
                 return NotFound();
@@ -50,37 +35,31 @@ namespace MvcArtify.Controllers
         }
 
         // GET: Artwork/Create
-        // Shows a form to create a new artwork
         public IActionResult Create()
         {
             return View();
         }
 
         // POST: Artwork/Create
-        // Adds a new artwork to the database
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ArtworkID,ATitle,ArtStyle,Type,ImagePath,Description,SalePrice")] Artwork artwork)
+        public IActionResult Create([Bind("ArtworkID,ATitle,ArtStyle,Type,ImagePath,Description,SalePrice")] Artwork artwork)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(artwork);
-                await _context.SaveChangesAsync();
+                // Mock adding the artwork. In reality, you'd add to the database
+                artwork.ArtworkID = _mockArtworks.Max(a => a.ArtworkID) + 1;
+                _mockArtworks.Add(artwork);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(artwork);
         }
 
         // GET: Artwork/Edit/5
-        // Shows a form to edit an existing artwork
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var artwork = await _context.Artworks.FindAsync(id);
+            var artwork = _mockArtworks.FirstOrDefault(a => a.ArtworkID == id);
             if (artwork == null)
             {
                 return NotFound();
@@ -89,10 +68,9 @@ namespace MvcArtify.Controllers
         }
 
         // POST: Artwork/Edit/5
-        // Updates an existing artwork in the database
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ArtworkID,ATitle,ArtStyle,Type,ImagePath,Description,SalePrice")] Artwork artwork)
+        public IActionResult Edit(int id, [Bind("ArtworkID,ATitle,ArtStyle,Type,ImagePath,Description,SalePrice")] Artwork artwork)
         {
             if (id != artwork.ArtworkID)
             {
@@ -101,74 +79,47 @@ namespace MvcArtify.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                // Mock edit logic. In reality, you'd update the database
+                var existingArtwork = _mockArtworks.FirstOrDefault(a => a.ArtworkID == id);
+                if (existingArtwork != null)
                 {
-                    _context.Update(artwork);
-                    await _context.SaveChangesAsync();
+                    existingArtwork.ATitle = artwork.ATitle;
+                    existingArtwork.ArtStyle = artwork.ArtStyle;
+                    existingArtwork.Type = artwork.Type;
+                    existingArtwork.ImagePath = artwork.ImagePath;
+                    existingArtwork.Description = artwork.Description;
+                    existingArtwork.SalePrice = artwork.SalePrice;
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ArtworkExists(artwork.ArtworkID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+
                 return RedirectToAction(nameof(Index));
             }
             return View(artwork);
         }
 
         // GET: Artwork/Delete/5
-        // Shows a confirmation page to delete an artwork
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var artwork = await _context.Artworks
-                .FirstOrDefaultAsync(m => m.ArtworkID == id);
+            var artwork = _mockArtworks.FirstOrDefault(a => a.ArtworkID == id);
             if (artwork == null)
             {
                 return NotFound();
             }
-
             return View(artwork);
         }
 
         // POST: Artwork/Delete/5
-        // Deletes an artwork from the database
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var artwork = await _context.Artworks.FindAsync(id);
-            _context.Artworks.Remove(artwork);
-            await _context.SaveChangesAsync();
+            // Mock delete logic. In reality, you'd delete from the database
+            var artwork = _mockArtworks.FirstOrDefault(a => a.ArtworkID == id);
+            if (artwork != null)
+            {
+                _mockArtworks.Remove(artwork);
+            }
+
             return RedirectToAction(nameof(Index));
-        }
-
-        // Checks if an artwork exists
-        private bool ArtworkExists(int id)
-        {
-            return _context.Artworks.Any(e => e.ArtworkID == id);
-        }
-
-        // Displays reviews for a specific artwork
-        public async Task<IActionResult> DisplayReviews(int artworkId)
-        {
-            var reviews = await _context.Reviews
-                .Where(r => r.ArtworkID == artworkId)
-                .Include(r => r.User)
-                .ToListAsync();
-
-            // Assuming you have a view named "DisplayReviews" to show these reviews
-            return View("DisplayReviews", reviews);
         }
     }
 }

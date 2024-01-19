@@ -1,0 +1,30 @@
+@model MvcArtify.Models.Artwork
+
+<h2>Artwork Details</h2>
+
+<div class="row">
+    <div class="col-md-8">
+        <dl class="dl-horizontal">
+            <dt>Title</dt>
+            <dd>@Html.DisplayFor(model => model.ATitle)</dd>
+
+            <dt>Style</dt>
+            <dd>@Html.DisplayFor(model => model.ArtStyle)</dd>
+
+            <dt>Type</dt>
+            <dd>@Html.DisplayFor(model => model.Type)</dd>
+
+            <dt>Description</dt>
+            <dd>@Html.DisplayFor(model => model.Description)</dd>
+
+            <dt>Price</dt>
+            <dd>@Html.DisplayFor(model => model.SalePrice)</dd>
+
+            <!-- Add other artwork details as needed -->
+        </dl>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
