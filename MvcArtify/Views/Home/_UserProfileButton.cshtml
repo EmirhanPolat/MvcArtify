@@ -1,0 +1,21 @@
+@model MvcArtify.Models.User
+
+
+@{
+    var isAuthenticated = User.Identity.IsAuthenticated;
+    var userId = isAuthenticated && Model != null ? Model.UId : -1;
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="text-right">
+        <a href="@Url.Action("Profile", "UserProfile")" class="btn btn-primary">Your Profile</a>
+        <a href="@Url.Action("SignOut", "Account")" class="btn btn-danger">Sign Out</a>
+    </div>
+}
+else
+{
+    <a asp-controller="Account" asp-action="SignIn" class="btn btn-success">Sign In</a>
+    <a asp-controller="Account" asp-action="SignUp" class="btn btn-info">Sign Up</a>
+}
+

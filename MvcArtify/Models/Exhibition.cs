@@ -16,6 +16,7 @@ namespace MvcArtify.Models
         public string Location { get; set; }
 
         public virtual ICollection<Artwork> Artworks { get; set; }
-        public object Gallery { get; internal set; }
+        public int GalleryID { get; set; } // Foreign key property
+        public virtual Gallery Gallery { get; set; }
     }
 }

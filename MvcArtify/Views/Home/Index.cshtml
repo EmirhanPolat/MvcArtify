@@ -26,10 +26,23 @@
             <a class="btn btn-primary" href="@Url.Action("Index", "Exhibition")">View Exhibitions</a>
         </div>
         <div class="col">
-            <a class="btn btn-primary" href="@Url.Action("Index", "UserProfile")">Your Profile</a>
+            <a class="btn btn-primary" href="@Url.Action("Index", "Userprofile")">Your Profile</a>
         </div>
         <div class="col">
             <a class="btn btn-primary" href="@Url.Action("BoughtArtworks", "UserProfile")">Purchased Artworks</a>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+        <div class="col">
+            <a asp-controller="Account" asp-action="SignIn" class="btn btn-success">Sign In</a>
+        </div>
+        <div class="col">
+            <a asp-controller="Account" asp-action="SignUp" class="btn btn-info">Sign Up</a>
+        </div>
+        <div class="col">
+            <a asp-controller="Account" asp-action="SignOut">Sign Out</a>
         </div>
     </div>
 </div>

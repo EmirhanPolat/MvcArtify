@@ -1,31 +1,36 @@
 using Microsoft.AspNetCore.Mvc;
-using MvcArtify.Models;
-using System.Collections.Generic;
+ // Adjust this to the actual namespace of UserRepository
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace MvcArtify.Controllers
 {
     public class UserProfileController : Controller
     {
-        public IActionResult Index()
-        {
-            // Simulated user profile data
-            User user = new User
-            {
-                UId = 1,
-                UName = "Jane Doe",
-                DigitalWallet = 1500,
-                BoughtArtworks = new List<Artwork>
-                {
-                    new Artwork { ArtworkID = 1, ATitle = "Sunset", ArtStyle = "Impressionism", Type = "Painting", SalePrice = 300.00f },
-                    new Artwork { ArtworkID = 2, ATitle = "Starry Night", ArtStyle = "Post-Impressionism", Type = "Painting", SalePrice = 400.00f },
-                    // Add more mock bought artworks as needed
-                }
-            };
+        private readonly UserRepository _userRepository;
 
-            return View(user);
+        public UserProfileController(UserRepository userRepository)
+        {
+            _userRepository = userRepository;
         }
 
-        // Additional methods (e.g., Profile, Edit, etc.) if needed
+        public async Task<IActionResult> Index()
+        {
+            // Retrieve user ID from claims
+            if (User.Identity.IsAuthenticated && int.TryParse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, out int userId))
+            {
+                var user = await _userRepository.GetUserByIdAsync(userId);
+                if (user != null)
+                {
+                    return View(user);
+                }
+            }
+
+            // Handle unauthorized access or user not found
+            return Unauthorized(); // Or redirect to a different view
+        }
     }
+
 }
 
